@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import type { InsuranceCatalog } from "../../types/registration/registration_types"
-import { insuranceCatalogSchema } from "../../types/registration/registration_schemas"
+import { getInsuranceCatalog } from "../../api/registration/getInsuranceCatalog"
 
 interface UseInsuranceCatalogResult {
   catalog: InsuranceCatalog | null
@@ -16,15 +16,9 @@ export function useInsuranceCatalog(): UseInsuranceCatalogResult {
   useEffect(() => {
     let cancelled = false
 
-    fetch("/data.json")
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`Request failed with status ${response.status}`)
-        return response.json()
-      })
+    getInsuranceCatalog()
       .then((data) => {
-        if (cancelled) return
-        setCatalog(insuranceCatalogSchema.parse(data))
+        if (!cancelled) setCatalog(data)
       })
       .catch(() => {
         if (!cancelled)
