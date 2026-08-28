@@ -4,12 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import type {
   InsuranceCatalog,
   RegistrationFormValues,
-  SubmissionPayload,
 } from "../../types/registration/registration_types"
 import { registrationFormSchema } from "../../types/registration/registration_schemas"
 import { getInsuranceCatalog } from "../../api/registration/getInsuranceCatalog"
 import { submitApplication } from "../../api/registration/submitApplication"
 import { formReducer } from "../../state/registration/formReducer"
+import { buildSubmissionPayload } from "../../state/registration/buildSubmissionPayload"
 import {
   clearPersistedFormState,
   loadPersistedFormState,
@@ -126,13 +126,9 @@ export function useRegistrationFlow() {
   }
 
   async function onSubmit(values: RegistrationFormValues) {
-    if (isSubmitting || !values.basicInsurance) return
-
-    const payload: SubmissionPayload = {
-      personal: values.personal,
-      basicInsurance: values.basicInsurance,
-      additionalInsurance: values.additionalInsurance,
-    }
+    if (isSubmitting) return
+    const payload = buildSubmissionPayload(values)
+    if (!payload) return
 
     setIsSubmitting(true)
     try {
