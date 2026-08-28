@@ -6,6 +6,7 @@
   "engines": {
     "node": "22.23.2"
   },
+  "homepage": "https://Daniel-Mch.github.io/zorgenzerkerheid_multistep_form",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -13,7 +14,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -36,6 +39,7 @@
     "eslint": "^10.9.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.4",
+    "gh-pages": "^6.3.0",
     "globals": "^17.11.0",
     "jsdom": "^30.0.1",
     "tailwindcss": "^4.3.3",

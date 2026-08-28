@@ -7,7 +7,7 @@ export function SiteHeader() {
           className="inline-flex rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <img
-            src="/ZZ logo.svg"
+            src={`${import.meta.env.BASE_URL}ZZ logo.svg`}
             alt="Zorg en Zekerheid"
             className="h-10 w-auto"
           />
