@@ -1,6 +1,6 @@
 # Zorgverzekering Multistep Form
 
-A multistep form for signing up for an insurance plan, built with React and TypeScript.
+A multistep form for signing up for an insurance plan.
 
 ## Tech stack
 
@@ -44,25 +44,34 @@ asdf install
 
 ## Available scripts
 
-| Command             | Description                                          |
-| -------------------- | ----------------------------------------------------- |
-| `npm run dev`        | Start the Vite dev server with HMR                     |
-| `npm run build`      | Type-check and build the app for production to `dist/` |
-| `npm run preview`    | Preview the production build locally                   |
-| `npm run lint`       | Run ESLint                                              |
-| `npm run test`       | Run Vitest in watch mode                                |
-| `npm run test:run`   | Run Vitest once (CI mode)                               |
-| `npm run test:ui`    | Run Vitest with the interactive UI                      |
+| Command            | Description                                            |
+| ------------------ | ------------------------------------------------------ |
+| `npm run dev`      | Start the Vite dev server with HMR                     |
+| `npm run build`    | Type-check and build the app for production to `dist/` |
+| `npm run preview`  | Preview the production build locally                   |
+| `npm run lint`     | Run ESLint                                             |
+| `npm run test`     | Run Vitest in watch mode                               |
+| `npm run test:run` | Run Vitest once (CI mode)                              |
+| `npm run test:ui`  | Run Vitest with the interactive UI                     |
 
-## Project structure
+## Testing
 
-The folder structure and components are being added incrementally on top of this scaffold. At the moment the app contains:
+Tests live in [`src/test/`](src/test/), separate from the source files they cover.
 
+Run the full suite once (CI mode):
+
+```bash
+npm run test:run
 ```
-src/
-  App.tsx          # Root component
-  App.test.tsx      # Example component test
-  main.tsx          # App entry point
-  index.css         # Tailwind entry point
-  test/setup.ts      # Vitest + Testing Library setup
+
+Run in watch mode while developing:
+
+```bash
+npm run test
+```
+
+Run with the interactive Vitest UI:
+
+```bash
+npm run test:ui
 ```
