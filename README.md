@@ -75,3 +75,19 @@ Run with the interactive Vitest UI:
 ```bash
 npm run test:ui
 ```
+
+## Architectuurkeuzes en eventuele afwegingen
+
+- **Vite**: snelle, zero-config dev server/HMR — de standaardkeuze voor een afgebakende React+TS-app.
+- **Vitest**: deelt dezelfde config- en transform-pipeline als Vite, dus geen tweede build tool nodig naast Vite zelf.
+- **`FormReducer`** custom voor de stapnavigatie, los van de formulierdata (die via React Hook Form + Zod loopt). Isolated logica om te testen.
+- **Zod** voor schema-validatie, gekoppeld aan React Hook Form via `zodResolver`.
+- Het gebruik van MultiStepForm.hooks.ts maakt de MultiStepForm leesbaarder.
+- Custom component library met Zorg en zekerheid huistijl.
+
+## Wat je anders zou doen met meer tijd
+
+- De **FormReducer** dit schaalt niet verder dan de omvang van dit formulier (een paar velden, geen asynchrone of cross-field validatie). Met de huidige data structuur uit de backend had ik de aantal keys kunnen gebruiken als het aantal stappen plus de persoonlijke gegevens.
+- Extra Tailwind global styling & components voor cards, containers en responsiveness for DRYer classNames.
+- Los component voor de naviation buttons van de form.
+- Beter mobile scrolling UX.
