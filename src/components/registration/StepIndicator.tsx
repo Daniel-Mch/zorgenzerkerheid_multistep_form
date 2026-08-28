@@ -23,12 +23,12 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
             aria-current={isCurrent ? "step" : undefined}
             className={`flex flex-1 flex-col gap-1 border-t-4 pt-2 text-xs sm:text-sm ${
               isCurrent || isComplete
-                ? "border-blue-600 text-blue-600"
+                ? "border-primary text-primary"
                 : "border-slate-200 text-slate-400"
             }`}
           >
             <span className="font-medium">Stap {step}</span>
-            <span className="hidden sm:inline">{label}</span>
+            <span>{label}</span>
           </li>
         )
       })}

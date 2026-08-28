@@ -5,6 +5,8 @@ import { PersonalInfoStep } from "./steps/PersonalInfoStep"
 import { BasicInsuranceStep } from "./steps/BasicInsuranceStep"
 import { AdditionalInsuranceStep } from "./steps/AdditionalInsuranceStep"
 import { ReviewModal } from "./ReviewModal"
+import { PremiumSummaryCard } from "./PremiumSummaryCard"
+import { ButtonPrimary, ButtonSecondary } from "../global/Buttons"
 import { useInsuranceCatalog, useRegistrationFlow } from "./MultiStepForm.hooks"
 
 export function MultiStepForm() {
@@ -54,10 +56,14 @@ export function MultiStepForm() {
           <h2 className="text-xl font-semibold text-slate-900">
             Aanvraag verstuurd!
           </h2>
-          <p className="text-slate-600">
+          <p className="text-slate-600 pb-8">
             Bedankt, {form.getValues("personal.firstName")}! We hebben je
             aanvraag ontvangen.
           </p>
+
+          <a href="https://www.zorgenzekerheid.nl/home">
+            <ButtonSecondary>Terug naar homepage</ButtonSecondary>
+          </a>
         </div>
       ) : (
         <FormProvider {...form}>
@@ -69,44 +75,47 @@ export function MultiStepForm() {
             <StepIndicator currentStep={step} />
 
             {step === 1 && <PersonalInfoStep />}
-            {step === 2 && <BasicInsuranceStep plans={catalog.basicInsurance} />}
+            {step === 2 && (
+              <BasicInsuranceStep plans={catalog.basicInsurance} />
+            )}
             {step === 3 && (
               <AdditionalInsuranceStep addons={catalog.additionalInsurance} />
             )}
 
-            <div
-              className={`flex ${step === 1 ? "justify-end" : "justify-between"}`}
-            >
-              {step > 1 && (
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  disabled={busy || isSubmitting}
-                  className="rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Terug
-                </button>
-              )}
+            <div className="sticky bottom-0 z-30 space-y-4 border-t border-slate-200 bg-white py-4">
+              {step > 1 && !isReviewOpen && <PremiumSummaryCard />}
 
-              {step < 3 ? (
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  disabled={busy}
-                  className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Volgende
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={openReview}
-                  disabled={busy}
-                  className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Bevestigen en versturen
-                </button>
-              )}
+              <div
+                className={`flex ${step === 1 ? "justify-end" : "justify-between"}`}
+              >
+                {step > 1 && (
+                  <ButtonSecondary
+                    type="button"
+                    onClick={handleBack}
+                    disabled={busy || isSubmitting}
+                  >
+                    Terug
+                  </ButtonSecondary>
+                )}
+
+                {step < 3 ? (
+                  <ButtonPrimary
+                    type="button"
+                    onClick={handleNext}
+                    disabled={busy}
+                  >
+                    Volgende
+                  </ButtonPrimary>
+                ) : (
+                  <ButtonPrimary
+                    type="button"
+                    onClick={openReview}
+                    disabled={busy}
+                  >
+                    Overzicht en versturen
+                  </ButtonPrimary>
+                )}
+              </div>
             </div>
 
             {isReviewOpen && formValues.basicInsurance && (
