@@ -25,3 +25,9 @@ export interface SubmissionPayload {
   basicInsurance: Plan
   additionalInsurance: Addon[]
 }
+
+export interface RegistrationFormValues {
+  personal: PersonalInfo
+  basicInsurance: Plan | null
+  additionalInsurance: Addon[]
+}
