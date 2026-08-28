@@ -1,3 +1,5 @@
+import { formatCurrency } from "../../utils/formatCurrency"
+
 interface SelectableCardProps {
   type: "radio" | "checkbox"
   name: string
@@ -7,11 +9,6 @@ interface SelectableCardProps {
   checked: boolean
   onChange: (checked: boolean) => void
 }
-
-const priceFormatter = new Intl.NumberFormat("nl-NL", {
-  style: "currency",
-  currency: "EUR",
-})
 
 export function SelectableCard({
   type,
@@ -44,7 +41,7 @@ export function SelectableCard({
         </span>
       </span>
       <span className="whitespace-nowrap font-semibold text-slate-900">
-        {priceFormatter.format(price)} p/m
+        {formatCurrency(price)} p/m
       </span>
     </label>
   )

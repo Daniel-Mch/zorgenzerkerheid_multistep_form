@@ -1,107 +1,23 @@
-import { useEffect, useReducer, useState } from "react"
-import { FormProvider, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { FormProvider } from "react-hook-form"
 import { FormContainer } from "./FormContainer"
 import { StepIndicator } from "./StepIndicator"
 import { PersonalInfoStep } from "./steps/PersonalInfoStep"
 import { BasicInsuranceStep } from "./steps/BasicInsuranceStep"
 import { AdditionalInsuranceStep } from "./steps/AdditionalInsuranceStep"
-import { useInsuranceCatalog } from "./MultiStepForm.hooks"
-import { formReducer } from "../../state/registration/formReducer"
-import {
-  clearPersistedFormState,
-  loadPersistedFormState,
-  savePersistedFormState,
-} from "../../state/registration/formPersistence"
-import { registrationFormSchema } from "../../types/registration/registration_schemas"
-import type {
-  RegistrationFormValues,
-  SubmissionPayload,
-} from "../../types/registration/registration_types"
-import { submitApplication } from "../../api/registration/submitApplication"
-
-const STEP_TRANSITION_GUARD_MS = 350
-
-function createDefaultFormValues(): RegistrationFormValues {
-  return {
-    personal: {
-      firstName: "",
-      lastName: "",
-      dateOfBirth: "",
-      email: "",
-      address: "",
-    },
-    basicInsurance: null,
-    additionalInsurance: [],
-  }
-}
+import { useInsuranceCatalog, useRegistrationFlow } from "./MultiStepForm.hooks"
 
 export function MultiStepForm() {
   const { catalog, loading, error } = useInsuranceCatalog()
-  const [persisted] = useState(() => loadPersistedFormState())
-  const [state, dispatch] = useReducer(formReducer, {
-    step: persisted?.step ?? 1,
-  })
-  const [busy, setBusy] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-
-  const form = useForm<RegistrationFormValues>({
-    resolver: zodResolver(registrationFormSchema),
-    defaultValues: persisted?.values ?? createDefaultFormValues(),
-    mode: "onBlur",
-  })
-
-  useEffect(() => {
-    savePersistedFormState({ step: state.step, values: form.getValues() })
-    const subscription = form.watch((values) => {
-      savePersistedFormState({
-        step: state.step,
-        values: values as RegistrationFormValues,
-      })
-    })
-    return () => subscription.unsubscribe()
-  }, [state.step, form])
-
-  async function handleNext() {
-    if (busy) return
-    setBusy(true)
-    try {
-      const field = state.step === 1 ? "personal" : "basicInsurance"
-      const isValid = await form.trigger(field)
-      if (!isValid) return
-      dispatch({ type: "NEXT" })
-      await new Promise((resolve) =>
-        setTimeout(resolve, STEP_TRANSITION_GUARD_MS),
-      )
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  function handleBack() {
-    if (busy) return
-    dispatch({ type: "BACK" })
-  }
-
-  async function onSubmit(values: RegistrationFormValues) {
-    if (isSubmitting || !values.basicInsurance) return
-
-    const payload: SubmissionPayload = {
-      personal: values.personal,
-      basicInsurance: values.basicInsurance,
-      additionalInsurance: values.additionalInsurance,
-    }
-
-    setIsSubmitting(true)
-    try {
-      await submitApplication(payload)
-      clearPersistedFormState()
-      setSubmitted(true)
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  const {
+    form,
+    step,
+    busy,
+    isSubmitting,
+    submitted,
+    handleNext,
+    handleBack,
+    onSubmit,
+  } = useRegistrationFlow()
 
   if (loading) {
     return (
@@ -144,20 +60,18 @@ export function MultiStepForm() {
             className="mt-6 space-y-8"
             noValidate
           >
-            <StepIndicator currentStep={state.step} />
+            <StepIndicator currentStep={step} />
 
-            {state.step === 1 && <PersonalInfoStep />}
-            {state.step === 2 && (
-              <BasicInsuranceStep plans={catalog.basicInsurance} />
-            )}
-            {state.step === 3 && (
+            {step === 1 && <PersonalInfoStep />}
+            {step === 2 && <BasicInsuranceStep plans={catalog.basicInsurance} />}
+            {step === 3 && (
               <AdditionalInsuranceStep addons={catalog.additionalInsurance} />
             )}
 
             <div
-              className={`flex ${state.step === 1 ? "justify-end" : "justify-between"}`}
+              className={`flex ${step === 1 ? "justify-end" : "justify-between"}`}
             >
-              {state.step > 1 && (
+              {step > 1 && (
                 <button
                   type="button"
                   onClick={handleBack}
@@ -168,7 +82,7 @@ export function MultiStepForm() {
                 </button>
               )}
 
-              {state.step < 3 ? (
+              {step < 3 ? (
                 <button
                   type="button"
                   onClick={handleNext}
