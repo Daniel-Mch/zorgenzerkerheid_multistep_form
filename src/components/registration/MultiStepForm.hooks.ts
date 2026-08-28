@@ -16,13 +16,6 @@ import {
   savePersistedFormState,
 } from "../../state/registration/formPersistence"
 
-// "Volgende" and the step 3 submit button occupy the same spot in the layout.
-// If the click that advances the step is the first half of a double-click, the
-// second click lands on whatever now sits there - on step 2 that's the submit
-// button, so it submits before the user can touch step 3. Keeping the button
-// disabled for a beat after every transition swallows that phantom click.
-const STEP_TRANSITION_GUARD_MS = 350
-
 function createDefaultFormValues(): RegistrationFormValues {
   return {
     personal: {
@@ -79,6 +72,7 @@ export function useRegistrationFlow() {
     step: persisted?.step ?? 1,
   })
   const [busy, setBusy] = useState(false)
+  const [isReviewOpen, setIsReviewOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
@@ -105,11 +99,7 @@ export function useRegistrationFlow() {
     try {
       const field = state.step === 1 ? "personal" : "basicInsurance"
       const isValid = await form.trigger(field)
-      if (!isValid) return
-      dispatch({ type: "NEXT" })
-      await new Promise((resolve) =>
-        setTimeout(resolve, STEP_TRANSITION_GUARD_MS),
-      )
+      if (isValid) dispatch({ type: "NEXT" })
     } finally {
       setBusy(false)
     }
@@ -118,6 +108,21 @@ export function useRegistrationFlow() {
   function handleBack() {
     if (busy) return
     dispatch({ type: "BACK" })
+  }
+
+  async function openReview() {
+    if (busy) return
+    setBusy(true)
+    try {
+      const isValid = await form.trigger()
+      if (isValid) setIsReviewOpen(true)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  function closeReview() {
+    setIsReviewOpen(false)
   }
 
   async function onSubmit(values: RegistrationFormValues) {
@@ -133,6 +138,7 @@ export function useRegistrationFlow() {
     try {
       await submitApplication(payload)
       clearPersistedFormState()
+      setIsReviewOpen(false)
       setSubmitted(true)
     } finally {
       setIsSubmitting(false)
@@ -143,10 +149,13 @@ export function useRegistrationFlow() {
     form,
     step: state.step,
     busy,
+    isReviewOpen,
     isSubmitting,
     submitted,
     handleNext,
     handleBack,
+    openReview,
+    closeReview,
     onSubmit,
   }
 }

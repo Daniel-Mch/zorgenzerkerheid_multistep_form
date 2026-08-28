@@ -4,6 +4,7 @@ import { StepIndicator } from "./StepIndicator"
 import { PersonalInfoStep } from "./steps/PersonalInfoStep"
 import { BasicInsuranceStep } from "./steps/BasicInsuranceStep"
 import { AdditionalInsuranceStep } from "./steps/AdditionalInsuranceStep"
+import { ReviewModal } from "./ReviewModal"
 import { useInsuranceCatalog, useRegistrationFlow } from "./MultiStepForm.hooks"
 
 export function MultiStepForm() {
@@ -12,12 +13,17 @@ export function MultiStepForm() {
     form,
     step,
     busy,
+    isReviewOpen,
     isSubmitting,
     submitted,
     handleNext,
     handleBack,
+    openReview,
+    closeReview,
     onSubmit,
   } = useRegistrationFlow()
+
+  const formValues = form.getValues()
 
   if (loading) {
     return (
@@ -93,14 +99,24 @@ export function MultiStepForm() {
                 </button>
               ) : (
                 <button
-                  type="submit"
-                  disabled={busy || isSubmitting}
+                  type="button"
+                  onClick={openReview}
+                  disabled={busy}
                   className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isSubmitting ? "Versturen…" : "Bevestigen en versturen"}
+                  Bevestigen en versturen
                 </button>
               )}
             </div>
+
+            {isReviewOpen && formValues.basicInsurance && (
+              <ReviewModal
+                basicInsurance={formValues.basicInsurance}
+                additionalInsurance={formValues.additionalInsurance}
+                isSubmitting={isSubmitting}
+                onCancel={closeReview}
+              />
+            )}
           </form>
         </FormProvider>
       )}
