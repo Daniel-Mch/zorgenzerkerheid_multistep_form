@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { formatCurrency } from "../../utils/formatCurrency"
+import { ButtonPrimary, ButtonSecondary } from "../global/Buttons"
 import type { Addon, Plan } from "../../types/registration/registration_types"
 
 interface ReviewModalProps {
@@ -85,21 +86,17 @@ export function ReviewModal({
         </div>
 
         <div className="mt-6 space-y-2">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          >
+          <ButtonPrimary type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting ? "Versturen…" : "Versturen"}
-          </button>
-          <button
+          </ButtonPrimary>
+          <ButtonSecondary
             type="button"
             onClick={onCancel}
             disabled={isSubmitting}
-            className="w-full rounded-lg border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full"
           >
             Wijzigen
-          </button>
+          </ButtonSecondary>
         </div>
       </div>
     </div>

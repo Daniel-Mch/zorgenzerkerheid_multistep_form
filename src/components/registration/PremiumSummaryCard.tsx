@@ -12,7 +12,7 @@ export function PremiumSummaryCard() {
     additionalInsurance.reduce((sum, addon) => sum + addon.price, 0)
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg bg-blue-900 px-4 py-3 text-white">
+    <div className="flex items-center justify-between gap-4 rounded-lg bg-primary px-4 py-3 text-white">
       <div className="space-y-1 text-sm">
         <p>
           <span className="font-semibold">Basis pakket:</span>{" "}
