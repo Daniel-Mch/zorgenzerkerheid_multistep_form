@@ -88,6 +88,14 @@ npm run test:ui
 ## Wat je anders zou doen met meer tijd
 
 - De **FormReducer** dit schaalt niet verder dan de omvang van dit formulier (een paar velden, geen asynchrone of cross-field validatie). Met de huidige data structuur uit de backend had ik de aantal keys kunnen gebruiken als het aantal stappen plus de persoonlijke gegevens.
+- SubmissionPayload & RegistrationFormValues type refactoring met z.infer.
+- Add a catch for submitApplication POST.
+- Confirmation component instead of conditional markup. Niet nodig als we routing hadden voor een confirmation url.
 - Extra Tailwind global styling & components voor cards, containers en responsiveness for DRYer classNames.
-- Los component voor de naviation buttons van de form.
-- Beter mobile scrolling UX.
+- FormNavigation component voor de naviation buttons van de form.
+- Global component voor inputs & validation message.
+- Global component voor Error notification.
+- Global component voor loading state.
+- Accessibility markup checks.
+- Refactor ReviewModal hook & price calculation util to own files.
+- Beter UX voor mobile scrolling.
