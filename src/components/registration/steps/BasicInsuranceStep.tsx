@@ -3,7 +3,7 @@ import { SelectableCard } from "../../global/SelectableCard"
 import type {
   Plan,
   RegistrationFormValues,
-} from "../../../types/registration/registration_types"
+} from "../../../types/registration/registration_schemas"
 
 interface BasicInsuranceStepProps {
   plans: Plan[]

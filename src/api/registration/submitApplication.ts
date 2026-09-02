@@ -1,4 +1,4 @@
-import type { SubmissionPayload } from "../../types/registration/registration_types"
+import type { SubmissionPayload } from "../../types/registration/registration_schemas"
 
 export async function submitApplication(
   payload: SubmissionPayload,

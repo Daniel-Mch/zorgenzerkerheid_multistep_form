@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import type { RegistrationFormValues } from "../../../types/registration/registration_types"
+import type { RegistrationFormValues } from "../../../types/registration/registration_schemas"
 
 const inputClassName =
   "w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600"

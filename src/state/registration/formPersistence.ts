@@ -1,5 +1,5 @@
 import type { Step } from "./formReducer"
-import type { RegistrationFormValues } from "../../types/registration/registration_types"
+import type { RegistrationFormValues } from "../../types/registration/registration_schemas"
 
 const STORAGE_KEY = "zz-registration-form"
 

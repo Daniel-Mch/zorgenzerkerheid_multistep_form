@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const planSchema = z.object({
+export const planSchema = z.object({
   id: z.string(),
   name: z.string(),
   price: z.number(),
@@ -20,13 +20,27 @@ export const personalInfoSchema = z.object({
   address: z.string().min(1, "Adres is verplicht"),
 })
 
-export const registrationFormSchema = z
-  .object({
-    personal: personalInfoSchema,
-    basicInsurance: planSchema.nullable(),
-    additionalInsurance: z.array(planSchema),
-  })
-  .refine((data) => data.basicInsurance !== null, {
+const registrationBaseSchema = z.object({
+  personal: personalInfoSchema,
+  basicInsurance: planSchema.nullable(),
+  additionalInsurance: z.array(planSchema),
+})
+
+export const registrationFormSchema = registrationBaseSchema.refine(
+  (data) => data.basicInsurance !== null,
+  {
     message: "Selecteer een basisverzekering",
     path: ["basicInsurance"],
-  })
+  },
+)
+
+export const submissionPayloadSchema = registrationBaseSchema.extend({
+  basicInsurance: planSchema,
+})
+
+export type PersonalInfo = z.infer<typeof personalInfoSchema>
+export type Plan = z.infer<typeof planSchema>
+export type Addon = Plan
+export type InsuranceCatalog = z.infer<typeof insuranceCatalogSchema>
+export type RegistrationFormValues = z.infer<typeof registrationFormSchema>
+export type SubmissionPayload = z.infer<typeof submissionPayloadSchema>

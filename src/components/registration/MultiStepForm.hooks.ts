@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import type {
   InsuranceCatalog,
   RegistrationFormValues,
-} from "../../types/registration/registration_types"
+} from "../../types/registration/registration_schemas"
 import { registrationFormSchema } from "../../types/registration/registration_schemas"
 import { getInsuranceCatalog } from "../../api/registration/getInsuranceCatalog"
 import { submitApplication } from "../../api/registration/submitApplication"
