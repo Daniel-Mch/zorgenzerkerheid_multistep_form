@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { formatCurrency } from "../../utils/formatCurrency"
 import { ButtonPrimary, ButtonSecondary } from "../global/Buttons"
-import type { Addon, Plan } from "../../types/registration/registration_types"
+import type { Addon, Plan } from "../../types/registration/registration_schemas"
 
 interface ReviewModalProps {
   basicInsurance: Plan

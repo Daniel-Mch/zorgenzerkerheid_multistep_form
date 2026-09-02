@@ -1,6 +1,6 @@
 import { useFormContext, useWatch } from "react-hook-form"
 import { formatCurrency } from "../../utils/formatCurrency"
-import type { RegistrationFormValues } from "../../types/registration/registration_types"
+import type { RegistrationFormValues } from "../../types/registration/registration_schemas"
 
 export function PremiumSummaryCard() {
   const { control } = useFormContext<RegistrationFormValues>()

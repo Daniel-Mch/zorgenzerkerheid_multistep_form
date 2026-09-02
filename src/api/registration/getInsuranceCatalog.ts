@@ -1,5 +1,5 @@
+import type { InsuranceCatalog } from "../../types/registration/registration_schemas"
 import { insuranceCatalogSchema } from "../../types/registration/registration_schemas"
-import type { InsuranceCatalog } from "../../types/registration/registration_types"
 
 export async function getInsuranceCatalog(): Promise<InsuranceCatalog> {
   const response = await fetch(`${import.meta.env.BASE_URL}data.json`)

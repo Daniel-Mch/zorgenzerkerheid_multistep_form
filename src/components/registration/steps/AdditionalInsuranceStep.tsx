@@ -3,7 +3,7 @@ import { SelectableCard } from "../../global/SelectableCard"
 import type {
   Addon,
   RegistrationFormValues,
-} from "../../../types/registration/registration_types"
+} from "../../../types/registration/registration_schemas"
 
 interface AdditionalInsuranceStepProps {
   addons: Addon[]

@@ -1,16 +1,12 @@
+import { submissionPayloadSchema } from "../../types/registration/registration_schemas"
 import type {
   RegistrationFormValues,
   SubmissionPayload,
-} from "../../types/registration/registration_types"
+} from "../../types/registration/registration_schemas"
 
 export function buildSubmissionPayload(
   values: RegistrationFormValues,
 ): SubmissionPayload | null {
-  if (!values.basicInsurance) return null
-
-  return {
-    personal: values.personal,
-    basicInsurance: values.basicInsurance,
-    additionalInsurance: values.additionalInsurance,
-  }
+  const result = submissionPayloadSchema.safeParse(values)
+  return result.success ? result.data : null
 }
