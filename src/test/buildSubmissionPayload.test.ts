@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { buildSubmissionPayload } from "../state/registration/buildSubmissionPayload"
-import type { RegistrationFormValues } from "../types/registration/registration_types"
+import type { RegistrationFormValues } from "../types/registration/registration_schemas"
 
 const personal = {
   firstName: "Jan",
@@ -41,6 +41,16 @@ describe("buildSubmissionPayload", () => {
       personal,
       basicInsurance: null,
       additionalInsurance: [],
+    }
+
+    expect(buildSubmissionPayload(values)).toBeNull()
+  })
+
+  it("returns null when personal info fails schema validation", () => {
+    const values: RegistrationFormValues = {
+      personal: { ...personal, email: "not-an-email" },
+      basicInsurance,
+      additionalInsurance,
     }
 
     expect(buildSubmissionPayload(values)).toBeNull()
